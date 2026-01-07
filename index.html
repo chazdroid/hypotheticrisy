@@ -532,30 +532,33 @@
         </footer>
     </div>
 
-    <div class="scroll-hint" role="presentation" aria-hidden="true">ITERATE →</div>
+    <div class="scroll-hint" role="note" aria-label="Scroll hint: iterate">ITERATE →</div>
 
     <script>
         // Charlie's secret
         const TRIGGER_WORD_LENGTH = 7;
+        const LETTER_KEY_REGEX = /[a-zA-Z]/;
         let typed = '';
         let boosterCount = 0;
         let lastFocusedElement = null;
+        let focusableElements = [];
 
         document.addEventListener('keypress', (e) => {
             if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
-            if (e.key.length !== 1 || !/[a-zA-Z]/.test(e.key)) return;
+            if (e.key.length !== 1 || !LETTER_KEY_REGEX.test(e.key)) return;
             typed = (typed + e.key).slice(-TRIGGER_WORD_LENGTH);
             if (typed.toLowerCase() === 'charlie') {
                 const dialog = document.getElementById('charlieMode');
                 dialog.classList.add('active');
                 lastFocusedElement = document.activeElement;
                 dialog.focus();
-                document.getElementById('backBtn').focus();
+                focusableElements = Array.from(dialog.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
             }
         });
 
         document.getElementById('backBtn').addEventListener('click', () => {
             document.getElementById('charlieMode').classList.remove('active');
+            focusableElements = [];
             (lastFocusedElement || document.body).focus();
         });
 
@@ -564,10 +567,9 @@
                 document.getElementById('backBtn').click();
             }
             if (e.key === 'Tab' && document.getElementById('charlieMode').classList.contains('active')) {
-                const focusable = Array.from(document.getElementById('charlieMode').querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
-                if (!focusable.length) return;
-                const first = focusable[0];
-                const last = focusable[focusable.length - 1];
+                if (!focusableElements.length) return;
+                const first = focusableElements[0];
+                const last = focusableElements[focusableElements.length - 1];
                 if (e.shiftKey && document.activeElement === first) {
                     e.preventDefault();
                     last.focus();
