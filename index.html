@@ -360,9 +360,9 @@
     </style>
 </head>
 <body>
-    <div class="charlie-mode" id="charlieMode" role="dialog" aria-modal="true" tabindex="-1">
+    <div class="charlie-mode" id="charlieMode" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="charlieTitle">
         <div class="charlie-container">
-            <h1 class="charlie-title">🎉 SECRET PAGE UNLOCKED 🎉</h1>
+            <h1 class="charlie-title" id="charlieTitle">🎉 SECRET PAGE UNLOCKED 🎉</h1>
             <p class="charlie-subtitle">for the boss of the English Language</p>
             
             <div class="charlie-content">
@@ -377,7 +377,7 @@
                     <span class="poop-emoji">👔</span>
                 </div>
                 
-                <button class="booster-button" id="boosterBtn">BOOSTER</button>
+                <button class="booster-button" id="boosterBtn" aria-describedby="boosterCount">BOOSTER</button>
                 <div class="booster-count" id="boosterCount"></div>
 
                 <div class="alexa-box">
@@ -552,6 +552,12 @@
         document.getElementById('backBtn').addEventListener('click', () => {
             document.getElementById('charlieMode').classList.remove('active');
             (lastFocusedElement || document.body).focus();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('charlieMode').classList.contains('active')) {
+                document.getElementById('backBtn').click();
+            }
         });
 
         document.getElementById('boosterBtn').addEventListener('click', () => {
