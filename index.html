@@ -360,7 +360,7 @@
     </style>
 </head>
 <body>
-    <div class="charlie-mode" id="charlieMode">
+    <div class="charlie-mode" id="charlieMode" role="dialog" aria-modal="true" tabindex="-1">
         <div class="charlie-container">
             <h1 class="charlie-title">🎉 SECRET PAGE UNLOCKED 🎉</h1>
             <p class="charlie-subtitle">for the boss of the English Language</p>
@@ -531,22 +531,27 @@
         </footer>
     </div>
 
-    <div class="scroll-hint">ITERATE →</div>
+    <div class="scroll-hint" role="presentation" aria-hidden="true">ITERATE →</div>
 
     <script>
         // Charlie's secret
         let typed = '';
         let boosterCount = 0;
+        let lastFocusedElement = null;
 
         document.addEventListener('keypress', (e) => {
+            if (e.ctrlKey || e.metaKey || e.altKey) return;
             typed = (typed + e.key).slice(-7);
             if (typed.toLowerCase() === 'charlie') {
                 document.getElementById('charlieMode').classList.add('active');
+                lastFocusedElement = document.activeElement;
+                document.getElementById('backBtn').focus();
             }
         });
 
         document.getElementById('backBtn').addEventListener('click', () => {
             document.getElementById('charlieMode').classList.remove('active');
+            (lastFocusedElement || document.body).focus();
         });
 
         document.getElementById('boosterBtn').addEventListener('click', () => {
