@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relational Gov.ª</title>
+    <title>Relational Gov.ᵃ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -397,7 +397,7 @@
 
     <div class="container" id="mainContent">
         <header>
-            <h1>Relational Gov.ª</h1>
+            <h1>Relational Gov.ᵃ</h1>
             <p class="subtitle">Notes on what we're already doing</p>
         </header>
 
@@ -546,8 +546,10 @@
             if (e.key.length !== 1 || !/[a-zA-Z]/.test(e.key)) return;
             typed = (typed + e.key).slice(-TRIGGER_WORD_LENGTH);
             if (typed.toLowerCase() === 'charlie') {
-                document.getElementById('charlieMode').classList.add('active');
+                const dialog = document.getElementById('charlieMode');
+                dialog.classList.add('active');
                 lastFocusedElement = document.activeElement;
+                dialog.focus();
                 document.getElementById('backBtn').focus();
             }
         });
@@ -562,7 +564,7 @@
                 document.getElementById('backBtn').click();
             }
             if (e.key === 'Tab' && document.getElementById('charlieMode').classList.contains('active')) {
-                const focusable = Array.from(document.getElementById('charlieMode').querySelectorAll('button'));
+                const focusable = Array.from(document.getElementById('charlieMode').querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
                 if (!focusable.length) return;
                 const first = focusable[0];
                 const last = focusable[focusable.length - 1];
