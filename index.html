@@ -360,12 +360,12 @@
     </style>
 </head>
 <body>
-    <div class="charlie-mode" id="charlieMode" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="charlieTitle">
+    <div class="charlie-mode" id="charlieMode" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="charlieTitle" aria-describedby="charlieContent">
         <div class="charlie-container">
             <h1 class="charlie-title" id="charlieTitle">🎉 SECRET PAGE UNLOCKED 🎉</h1>
             <p class="charlie-subtitle">for the boss of the English Language</p>
             
-            <div class="charlie-content">
+            <div class="charlie-content" id="charlieContent">
                 <p class="charlie-text">Hey Charlie,</p>
                 <p class="charlie-text">You found the secret. Of course you did.</p>
                 <p class="charlie-text">This whole website is about how we're all connected — how what we do matters, and how asking questions is more important than having answers.</p>
@@ -535,13 +535,14 @@
 
     <script>
         // Charlie's secret
+        const TRIGGER_WORD_LENGTH = 7;
         let typed = '';
         let boosterCount = 0;
         let lastFocusedElement = null;
 
         document.addEventListener('keypress', (e) => {
             if (e.ctrlKey || e.metaKey || e.altKey) return;
-            typed = (typed + e.key).slice(-7);
+            typed = (typed + e.key).slice(-TRIGGER_WORD_LENGTH);
             if (typed.toLowerCase() === 'charlie') {
                 document.getElementById('charlieMode').classList.add('active');
                 lastFocusedElement = document.activeElement;
