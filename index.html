@@ -236,6 +236,7 @@
             z-index: 9999;
         }
         .charlie-mode.active { display: flex; }
+        .charlie-mode:focus { outline: 3px solid var(--accent); }
 
         .charlie-container { max-width: 600px; text-align: center; }
 
@@ -541,7 +542,8 @@
         let lastFocusedElement = null;
 
         document.addEventListener('keypress', (e) => {
-            if (e.ctrlKey || e.metaKey || e.altKey) return;
+            if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+            if (e.key.length !== 1 || !/[a-zA-Z]/.test(e.key)) return;
             typed = (typed + e.key).slice(-TRIGGER_WORD_LENGTH);
             if (typed.toLowerCase() === 'charlie') {
                 document.getElementById('charlieMode').classList.add('active');
@@ -558,6 +560,19 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && document.getElementById('charlieMode').classList.contains('active')) {
                 document.getElementById('backBtn').click();
+            }
+            if (e.key === 'Tab' && document.getElementById('charlieMode').classList.contains('active')) {
+                const focusable = Array.from(document.getElementById('charlieMode').querySelectorAll('button'));
+                if (!focusable.length) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
             }
         });
 
